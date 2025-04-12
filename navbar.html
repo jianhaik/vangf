@@ -32,7 +32,7 @@ nav {
   /* position: fixed; */
    left: 0;
    top: 0;
-   width: 99%;
+   width: 100%;
    height: 5%;
    background-color: rgb(148, 63, 205);
    /* flex: 1; */
@@ -347,7 +347,7 @@ select:after {
 
 
 ul3 {
-    width: 15%; 
+    width: 29%; 
     height: 100%;
     float: left;
     list-style-type: none;
@@ -417,7 +417,7 @@ ul3 button:before{
   /* flex: 1; */
    left: 0;
    bottom: 0;
-   width: 95%;
+   width: 100%;
    height: 4%;
    position: fixed;
    background-color: rgb(0, 255, 94);
@@ -808,8 +808,10 @@ function firebaseAuth()
 		var j7=0;
 		var k1=0;
 		var k2=0;
-		var other=0
+		var other=0;
 		var otherArr = new Array();
+    var ignore=0;
+    var ignoreArr = new Array();
 		var dateArr=new Array();
 	
 	
@@ -817,9 +819,13 @@ function firebaseAuth()
 			var dateEach=data[m][0].slice(0,11);
 			if(!dateArr.includes(dateEach)){
 					dateArr.push(dateEach);
-			}
-			if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
-					i1=i1+1;
+			};
+
+			if(data[m][18]=='1' || data[m][3]=='Arrived at Depot' || data[m][6]=='NOCHARGETONERPU'){
+        ignore=m+1;
+        ignoreArr.push(ignore);  
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
+					i1=i1+1;   
 			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='GT'){
 					i2=i2+1;
       }else if(data[m][3]=='Closed' && data[m][4]=='GT'){
@@ -828,8 +834,12 @@ function firebaseAuth()
 					i4=i4+1;
       }else if(data[m][3]=='OVERSIZED' && data[m][4]=='GT'){
 					i5=i5+1;
-      }else if(data[m][3]=='Picked Up' && data[m][4]=='GT'){
-					i6=i6+1;        
+      }else if(data[m][3]=='Picked Up' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
+					i6=i6+1;  
+      }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='GT'){
+					i7=i7+1; 
+      }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
+					i8=i8+1; 
 			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='NOVEXCO'){
 				j1=j1+1;
 			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='NOVEXCO'){
@@ -840,18 +850,12 @@ function firebaseAuth()
 					j4=j4+1;
       }else if(data[m][3]=='OVERSIZED' && data[m][4]=='NOVEXCO'){
 					j5=j5+1;   
-      }else if(data[m][3]=='Picked Up' && data[m][4]=='NOVEXCO'){
-					j6=j6+1;       
-			}else if(data[m][3]=='Delivered at Warehouse' && data[m][4]=='GT'){
-						i8=i8+1;
-      }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT'){
-						i8=i8+1; 
-      }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='GT'){
-						k1=k1+1;      
-      }else if(data[m][18]=='1' && data[m][4]=='GT'){
-						k1=k1+1;          
+      }else if(data[m][3]=='Picked Up' && data[m][4]=='NOVEXCO' && data[m][6]=='PICK UP'){
+					j6=j6+1;
+      }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='NOVEXCO'){
+					j7=j7+1;                  
 			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='MC'){
-						k2=k2+1;
+						k2=k2+1;        
 			}else{
 						other=m+1;
 						otherArr.push(other);
@@ -900,7 +904,8 @@ function firebaseAuth()
 			csvStr += "NOV GHOST"+","+""+","+j7+'\r\n';
 			csvStr += "NATRULAB"+","+""+","+k1+'\r\n';
 			csvStr += "MISC"+","+""+","+k2+'\r\n';
-			csvStr += "other"+","+""+","+JSON.stringify(otherArr)+'\r\n';
+      csvStr += "ignore"+","+ignoreArr.length+","+ignoreArr.join("/")+'\r\n';
+			csvStr += "other"+","+otherArr.length+","+otherArr.join("/")+'\r\n';
 			
 			//sessionStorage.setItem("csvString", csvStr);
 			console.log(csvStr);
