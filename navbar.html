@@ -815,7 +815,11 @@ function firebaseAuth()
 		var dateArr=new Array();
 	
 	
-		for (var m = 1; m < data.length-1; m++) {
+		for (var m = 1; m < data.length; m++) {
+      if(data[m].length<5){
+					break;
+			};
+
 			var dateEach=data[m][0].slice(0,11);
 			if(!dateArr.includes(dateEach)){
 					dateArr.push(dateEach);
@@ -881,12 +885,16 @@ function firebaseAuth()
 	
 			var csvStr ="";
 			for (var j = 0; j < data.length; j++) {
+        if(data[j].length<5){
+					break;
+			  };
 				for (var k = 0; k < data[j].length; k++) {
 					csvStr += data[j][k]+","
 				}
 				csvStr = csvStr.slice(0,-1)+'\r\n';
 			}
-	
+
+      csvStr += ""+","+""+","+'\r\n';
 			csvStr += "GT Delivered"+","+""+","+i1+'\r\n';
 			csvStr += "GT OFD"+","+""+","+i2+'\r\n';
 			csvStr += "GT EXCEPTION"+","+""+","+i3+'\r\n';
