@@ -6,6 +6,7 @@
 <meta name="google" content="nositelinkssearchbox">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>dispatch page</title>
+<link rel="icon" href="/vangf/assets/favicon-xeWRx1_M.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-database-compat.js"></script>
@@ -637,7 +638,7 @@ ul3 button:before{
 			   
 		   }}	
 
-       function firebaseInit()
+  function firebaseInit()
 	{
 	  const firebaseConfig = {
 			apiKey: "AIzaSyDYSjXVHK9N9H_sQYF9jEb1k4Nhtl-V-us",
@@ -652,9 +653,10 @@ ul3 button:before{
 	  // Initialize Firebase
 	  firebase.initializeApp(firebaseConfig);
 		//const storage = firebase.storage();
+    firebaseAuth();
 	}
 	
-function firebaseAuth()
+  function firebaseAuth()
 	{
 	  firebase.auth().signInWithEmailAndPassword("kjhlr@hotmail.com", "671691")
 	   .then(function() {
@@ -972,7 +974,7 @@ function firebaseAuth()
   window.onload = function() {
    
    firebaseInit();
-   firebaseAuth();
+  
    
    
    };
