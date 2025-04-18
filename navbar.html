@@ -7,10 +7,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>dispatch page</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-storage-compat.js"></script>
+<!-- <script type="text/javascript" src="./src/components/myJS.js"></script> -->
 
 
 
-<!-- <script type="text/javascript" src="myJS2.js"></script> -->
 <style>
   
 
@@ -28,7 +32,7 @@ nav {
   /* position: fixed; */
    left: 0;
    top: 0;
-   width: 99%;
+   width: 100%;
    height: 5%;
    background-color: rgb(148, 63, 205);
    /* flex: 1; */
@@ -343,7 +347,7 @@ select:after {
 
 
 ul3 {
-    width: 15%; 
+    width: 29%; 
     height: 100%;
     float: left;
     list-style-type: none;
@@ -413,7 +417,7 @@ ul3 button:before{
   /* flex: 1; */
    left: 0;
    bottom: 0;
-   width: 95%;
+   width: 100%;
    height: 4%;
    position: fixed;
    background-color: rgb(0, 255, 94);
@@ -439,8 +443,8 @@ ul3 button:before{
 
 
 </style>
-  <script type="module" crossorigin src="/renew/assets/navbar-fGsHyMTH.js"></script>
-  <link rel="modulepreload" crossorigin href="/renew/assets/index-dfc2d82f-DJvshMEi.js">
+  <script type="module" crossorigin src="/vangf/assets/navbar-uBPJphPD.js"></script>
+  <link rel="modulepreload" crossorigin href="/vangf/assets/index-dfc2d82f-CG6sA5pC.js">
 </head>
 <body>
 <nav>
@@ -583,7 +587,7 @@ ul3 button:before{
             <a href="#" id="oneRowEdit">Row Edit</a>
             <a href="#" id="deleteItems">Delete Items</a>
             <a href="#" id="terminate" >Terminate Items</a>
-            <a href="#" id="createData" >Create Data</a>
+            <a href="#" id="createData" onclick="changeFile()">Create Data</a>
             <a href="#" id="dataToFB" >Data to FB</a>
           </div>
           
@@ -632,10 +636,349 @@ ul3 button:before{
 			document.getElementById("mySidenav").style.display=""
 			   
 		   }}	
+
+       function firebaseInit()
+	{
+	  const firebaseConfig = {
+			apiKey: "AIzaSyDYSjXVHK9N9H_sQYF9jEb1k4Nhtl-V-us",
+			authDomain: "joblist-kang.firebaseapp.com",
+			databaseURL: "https://joblist-kang.firebaseio.com",
+			projectId: "joblist-kang",
+			storageBucket: "joblist-kang.appspot.com",
+			messagingSenderId: "704002182844",
+			appId: "1:704002182844:web:636b84021295c9c629cab9",
+			measurementId: "G-W779X1QZW2"
+			};
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+		//const storage = firebase.storage();
+	}
+	
+function firebaseAuth()
+	{
+	  firebase.auth().signInWithEmailAndPassword("kjhlr@hotmail.com", "671691")
+	   .then(function() {
+		//window.alert("auth-ok");
+		//window.addEventListener('dataActReady', creatCsvArr());
+		//success
+		//  document.getElementById("demo").innerHTML = "ok";
+		//  myFunction();
+	   })
+	  .catch(function() {
+		window.alert("auth-wrong");
+		// Error Handling
+		  //document.getElementById("demo").innerHTML = "Wrong"; 
+	  });
+	
+	}
+
+	async function changeFile() {
+		
+		let fileHandle;
+		const options = {
+			types: [
+				{
+					description: "text",
+					accept: {
+						"text/csv": [".csv"],
+					},
+				},
+			],
+			excludeAcceptAllOption: true,
+			multiple: false,
+		 };
+		 
+		[fileHandle] = await window.showOpenFilePicker(options);
+		const file = await fileHandle.getFile();
+		const contents = await file.text();
+		
+		let data = contents.split("\n");
+		console.log(data.length);
+		console.log(data[0]);
+		console.log(data[1]);
+		//console.log(data[22]);
+		//console.log(assemblyArr);
+		// run code with our fileHandle
+		// if (fileHandle.kind === "file") {   
+		//   // run file code
+		 
+	
+		// } else if (fileHandle.kind === "directory") {
+		//   // run directory code
+		// }
+		var strd=data[1].trim();
+		var i1=0;
+		var i2=0;
+		for (var k = 0; k < strd.length; k++){
+		let c=strd[k];
+			if(c==","){
+				i1++;
+			}
+			if(c=="|"){
+				i2++;
+			}
+		}
+		if(i1<22 && i2<22){
+			window.alert("new data,no such a data structure!");
+			return
+		}
+	
+		 var dataAct=new Array();
+		for (var i = 0; i < data.length; i++) {
+			var strk=data[i].trim();
+			let dataSub;
+			//dataAct=[];
+			if(i1>20){
+				var complex=false;
+				var newStr='';
+				for (var k = 0; k < strk.length; k++){
+					let c=strk[k];
+						if(c=='"'){
+							//newStr += c;
+							if(complex){
+								complex = false;
+							}else{
+								complex = true;
+							}
+						}else{
+							if(complex && c==',' ){
+								newStr += ';';
+							}else{					
+								newStr += c;
+							}
+						}
+			
+				}
+					//data[i] = newStr;
+					dataSub = newStr.split(",");
+					dataAct.push(dataSub);
+			}
+	
+			if(i2>20){
+				var newlStr='';
+				for (var m = 0; m < strk.length; m++){
+					let d=strk[m];
+					if( d==',' ){
+						newlStr += ';';
+					}else{					
+						newlStr += d;
+					}
+			
+				}
+				 dataSub = newlStr.split("|");
+				 dataAct.push(dataSub);
+			}
+			 
+				
+		}
+		console.log(dataAct);
+		if(dataAct==null || dataAct.length<=1){
+			window.alert("no data!");
+			return
+		}
+		var str=dataAct[0][6]+dataAct[0][18]+dataAct[0][24]
+		if(str == "ServiceStatusScan Type"){
+			creatCsvArr(dataAct)
+		}else{    
+			window.alert("new data,no such a data structure!");
+			return
+		}
+	
+	
+	 
+	}
+
+	function creatCsvArr(data){
+		
+		console.log(data);
+		var i1=0;
+		var i2=0;
+		var i3=0;
+		var i4=0;
+		var i5=0;
+		var i6=0;
+		var i7=0;
+		var i8=0;
+		var j1=0;
+		var j2=0;
+		var j3=0;
+		var j4=0;
+		var j5=0;
+		var j6=0;
+		var j7=0;
+		var k1=0;
+		var k2=0;
+		var other=0;
+		var otherArr = new Array();
+    var ignore=0;
+    var ignoreArr = new Array();
+		var dateArr=new Array();
+	
+	
+		for (var m = 1; m < data.length; m++) {
+      if(data[m].length<5){
+					break;
+			};
+
+			var dateEach=data[m][0].slice(0,11);
+			if(!dateArr.includes(dateEach)){
+					dateArr.push(dateEach);
+			};
+
+			if(data[m][18]=='1' || data[m][3]=='Arrived at Depot' || data[m][6]=='NOCHARGETONERPU'){
+        ignore=m+1;
+        ignoreArr.push(ignore);  
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
+					i1=i1+1;   
+			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='GT'){
+					i2=i2+1;
+      }else if(data[m][3]=='Closed' && data[m][4]=='GT'){
+					i3=i3+1;
+			}else if(data[m][3]=='Furniture' && data[m][4]=='GT'){
+					i4=i4+1;
+      }else if(data[m][3]=='OVERSIZED' && data[m][4]=='GT'){
+					i5=i5+1;
+      }else if(data[m][3]=='Picked Up' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
+					i6=i6+1;  
+      }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='GT'){
+					i7=i7+1; 
+      }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
+					i8=i8+1; 
+			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='NOVEXCO'){
+				j1=j1+1;
+			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='NOVEXCO'){
+				j2=j2+1;
+      }else if(data[m][3]=='Closed' && data[m][4]=='NOVEXCO'){
+        j3=j3+1;  
+			}else if(data[m][3]=='Furniture' && data[m][4]=='NOVEXCO'){
+					j4=j4+1;
+      }else if(data[m][3]=='OVERSIZED' && data[m][4]=='NOVEXCO'){
+					j5=j5+1;   
+      }else if(data[m][3]=='Picked Up' && data[m][4]=='NOVEXCO' && data[m][6]=='PICK UP'){
+					j6=j6+1;
+      }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='NOVEXCO'){
+					j7=j7+1;                  
+			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='MC'){
+						k2=k2+1;        
+			}else{
+						other=m+1;
+						otherArr.push(other);
+			}
+		 
+		}
+			dateArr.sort();
+			
+			
+			//let time= new Date();
+			//var timeStr=getDatetime;
+			let myTime= new Date().valueOf(); 
+			 var offset=new Date().getTimezoneOffset()*-60*1000; // offset mm
+			const timeStr = (new Date(myTime+offset)).toISOString().slice(0, 19).replace("T", " ");
+			var fileName="";
+					if(otherArr.length==0){
+						fileName=data[1][1]+"-"+dateArr[0]+"-"+dateArr[dateArr.length-1]+"-"+timeStr+"-"+"good"+".csv";
+					}else{
+						fileName=data[1][1]+"-"+dateArr[0]+"-"+dateArr[dateArr.length-1]+"-"+timeStr+"-"+"other"+".csv";
+					}
+			
+			console.log(fileName);
+	
+			var csvStr ="";
+			for (var j = 0; j < data.length; j++) {
+        if(data[j].length<5){
+					break;
+			  };
+				for (var k = 0; k < data[j].length; k++) {
+					csvStr += data[j][k]+","
+				}
+				csvStr = csvStr.slice(0,-1)+'\r\n';
+			}
+
+      csvStr += ""+","+""+","+'\r\n';
+			csvStr += "GT Delivered"+","+""+","+i1+'\r\n';
+			csvStr += "GT OFD"+","+""+","+i2+'\r\n';
+			csvStr += "GT EXCEPTION"+","+""+","+i3+'\r\n';
+			csvStr += "GT FURNITURE"+","+""+","+i4+'\r\n';
+			csvStr += "GT O/S"+","+""+","+i5+'\r\n';
+			csvStr += "GT PICK UP"+","+""+","+i6+'\r\n';
+			csvStr += "GT GHOST"+","+""+","+i7+'\r\n';
+			csvStr += "Return to WH/Pick Up Not Available"+","+""+","+i8+'\r\n';
+			csvStr += "NOV Delivered"+","+""+","+j1+'\r\n';
+			csvStr += "NOV OFD"+","+""+","+j2+'\r\n';
+			csvStr += "NOV EXCEPTION"+","+""+","+j3+'\r\n';
+			csvStr += "NOV FURNITURE"+","+""+","+j4+'\r\n';
+			csvStr += "NOV O/S"+","+""+","+j5+'\r\n';
+			csvStr += "NOV PICK UP"+","+""+","+j6+'\r\n';
+			csvStr += "NOV GHOST"+","+""+","+j7+'\r\n';
+			csvStr += "NATRULAB"+","+""+","+k1+'\r\n';
+			csvStr += "MISC"+","+""+","+k2+'\r\n';
+      csvStr += "ignore"+","+ignoreArr.length+","+ignoreArr.join("/")+'\r\n';
+			csvStr += "other"+","+otherArr.length+","+otherArr.join("/")+'\r\n';
+			
+			//sessionStorage.setItem("csvString", csvStr);
+			console.log(csvStr);
+			var file = new Blob([csvStr], {type: "text/csv;charset=utf-8"});
+			if (window.navigator.msSaveOrOpenBlob) // IE10+
+			window.navigator.msSaveOrOpenBlob(file, fileName);
+			else { // Others
+					var a = document.createElement("a"),
+									url = URL.createObjectURL(file);
+					a.href = url;
+					a.download = fileName;
+					document.body.appendChild(a);
+					a.click();
+					setTimeout(function() {
+							document.body.removeChild(a);
+							window.URL.revokeObjectURL(url);  
+					}, 0); 
+			}
+			
+	var userIn = window.localStorage.getItem('userInfo');
+	// Get a reference to the storage service, which is used to create references in your storage bucket
+	var storage = firebase.storage();
+
+	// Create a storage reference from our storage service
+	var storageRef = storage.ref();
+	// Child references can also take paths delimited by '/'
+	const timeStr2 = (new Date(myTime+offset)).toISOString().slice(0, 19).replace("T", " ");
+	var fileName2="";
+					if(otherArr.length==0){
+						fileName2=data[1][1]+"-"+timeStr+"-"+"good"+".csv";
+					}else{
+						fileName2=data[1][1]+"-"+timeStr+"-"+"other"+".csv";
+					}
+	var spaceRef = storageRef.child('csv/'+timeStr2.slice(0,11)+'/'+JSON.parse(userIn)[2]+'/'+fileName2);
+
+	console.log(timeStr2.slice(0,11));
+	console.log(JSON.parse(userIn)[2]);
+	console.log(fileName2);
+	console.log(spaceRef);
+	spaceRef.put(file).then((snapshot) => {
+		console.log('Uploaded a raw string!');
+	});
+			
+	}
+	
+
 </script> 
 
 
     
 
+
+
+<script>
+  //<h1 style="margin-bottom:0;">主要的网页标题</h1>//#0003D1  #FFA500
+  window.onload = function() {
+   
+   firebaseInit();
+   firebaseAuth();
+   
+   
+   };
+   
+  
+
+</script> 
 </body>
 </html>
