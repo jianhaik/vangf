@@ -829,6 +829,8 @@ ul3 button:before{
 
 			if(data[m][18]=='1' || data[m][3]=='Arrived at Depot' || data[m][6]=='NOCHARGETONERPU'){
         ignore=m+1;
+        console.log(m);
+        console.log(ignore);
         ignoreArr.push(ignore);  
       }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
 					i1=i1+1;   
@@ -846,6 +848,10 @@ ul3 button:before{
 					i7=i7+1; 
       }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
 					i8=i8+1; 
+      }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='DELIVERY'){
+					i8=i8+1; 
+      }else if(data[m][3]=='Pick Up Not Available' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
+					i8=i8+1;    
 			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='NOVEXCO'){
 				j1=j1+1;
 			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='NOVEXCO'){
@@ -895,7 +901,7 @@ ul3 button:before{
 				}
 				csvStr = csvStr.slice(0,-1)+'\r\n';
 			}
-
+      console.log(ignoreArr);
       csvStr += ""+","+""+","+'\r\n';
 			csvStr += "GT Delivered"+","+""+","+i1+'\r\n';
 			csvStr += "GT OFD"+","+""+","+i2+'\r\n';
@@ -914,8 +920,8 @@ ul3 button:before{
 			csvStr += "NOV GHOST"+","+""+","+j7+'\r\n';
 			csvStr += "NATRULAB"+","+""+","+k1+'\r\n';
 			csvStr += "MISC"+","+""+","+k2+'\r\n';
-      csvStr += "ignore"+","+ignoreArr.length+","+ignoreArr.join("/")+'\r\n';
-			csvStr += "other"+","+otherArr.length+","+otherArr.join("/")+'\r\n';
+      csvStr += "ignore"+","+ignoreArr.length+","+ignoreArr.join(";")+'\r\n';
+			csvStr += "other"+","+otherArr.length+","+otherArr.join(";")+'\r\n';
 			
 			//sessionStorage.setItem("csvString", csvStr);
 			console.log(csvStr);
