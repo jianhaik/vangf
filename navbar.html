@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="googlebot" content="notranslate">
+<meta name="google" content="nositelinkssearchbox">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dispatch page</title>
+<link rel="icon" href="/vangf/assets/favicon-xeWRx1_M.ico">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-storage-compat.js"></script>
+<!-- <script type="text/javascript" src="./src/components/myJS.js"></script> -->
+
+
+
+<style>
+  
+
+body, html {
+    
+    /* display: flex;
+    flex-direction: column; */
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    
+    }
+nav {
+  /* position: fixed; */
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 5%;
+   background-color: rgb(148, 63, 205);
+   /* flex: 1; */
+}    
+ul1 {
+    width: 30%;
+    height: 100%;
+    float: left;
+    list-style-type: none;
+    padding-left: 3%; 
+    margin: 0;
+    overflow: hidden;
+    background-color: peru;
+    
+    /* 父元素变成弹性盒 */
+  display: flex;
+  
+  /* 所有子元素作为整体垂直居中 */
+  align-items: center;
+
+}
+
+ul1 input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+ul1 label {
+ 
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 40px;
+	height: 20px;
+	background: #bada55;
+	display: block;
+	border-radius: 20px;
+	position: relative;
+}
+
+ul1 label:after {
+	content: '';
+	position: absolute;
+	top: 1px;
+	left: 17px;
+	width: 18px;
+	height: 18px;
+	background:#fff;
+	border-radius: 18px;
+	transition: 0.3s;
+}
+
+ul1 input:checked + label {
+	background:grey;
+ 
+}
+
+ul1 input:checked + label:after {
+	left: calc(100% - 17px);
+	transform: translateX(-100%);
+}
+
+ul1 label:active:after {
+	width: 26px;
+}
+
+ul1 p {
+  vertical-align:top;
+  margin-top: 1%;
+  margin-bottom:1%;
+  padding-left: 5%;
+  color: #fff;
+ 
+}
+
+ul2 {
+    width: 32%;
+    height: 100%;
+    float: left;
+    list-style-type: none;
+    padding-left: 3%; 
+    
+    vertical-align:middle;
+    overflow: hidden;
+    background-color: rgb(162, 205, 63);
+      /* 父元素变成弹性盒 */
+  display: flex;
+  
+  /* 所有子元素作为整体垂直居中 */
+  align-items: center;
+     /* #690404; */
+}
+
+
+
+ul2 select {
+  width: 40%;
+  height: 80%;
+  line-height: 80%;
+  align-items: center; /* 垂直居中 */
+  text-align-last: center;
+  justify-content: center; /* 水平居中 */
+
+  /* vertical-align:top; */
+
+  padding-left: 5%; 
+  margin-top: 0%;
+  margin-left:8%; 
+  margin-bottom:0%;
+  border-radius: 20px;
+  font-size: medium;
+  color: white; /* 白色文本 */
+  border: 2px solid  black;
+
+  background-color: #04AA6D; /* 绿色背景 */
+  cursor: pointer; /* 指针/手形图标 */
+}
+
+select:after {
+  border-color: red;
+}
+.select-selected {
+  color: #ffffff;
+  
+  border: 2px solid rgb(201, 172, 6); 
+  border-color: red;
+  cursor: pointer;
+}
+/* 下拉按钮样式 */
+.dropbtn {
+  width: 60%;
+  height: 80%;
+  line-height: 80%;
+
+  background-color: #04AA6D; /* 绿色背景 */
+  border: 2px solid  black;
+  color: white; /* 白色文本 */
+  /* vertical-align:middle; */
+  border-radius: 20px;
+
+  margin-top: 1%;
+  margin-left:12%; 
+  margin-bottom:1%;
+  /* padding: 10px 24px; 内边距离、 */
+  font-size: medium;
+  
+  cursor: pointer; /* 指针/手形图标 */
+  display: flex;
+
+  align-items: center; /* 垂直居中 */
+  text-align-last: center;
+  justify-content: center; /* 水平居中 */
+ 
+}
+
+/* 容器 <div> - 需要定位下拉内容 */
+  .dropdown {
+    width: 100%;
+  height: 100%;
+ float:right;
+    /* position: relative;
+    display: inline-block; */
+
+}        
+/* 下拉内容 (默认隐藏) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #a8e9be;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(150, 13, 13, 0.2);
+    margin-left: 2%;
+    z-index: 0;
+}
+/* 下拉菜单的链接 */
+.dropdown-content a {
+    color: black;
+    padding: 4px 16px;
+    text-decoration: none;
+    display: block;
+}
+/* 鼠标移上去后修改下拉菜单链接颜色 */
+.dropdown-content a:hover {
+  background-color: #7f65c5
+}
+/* 在鼠标移上去后显示下拉菜单 */
+.dropdown:hover .dropdown-content {
+    /* display: block; */
+    z-index:100;
+}
+/* 当下拉内容显示后修改下拉按钮的背景颜色 */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.actionClass {
+    display: none;
+    position: absolute;
+    background-color: #a8e9be;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(150, 13, 13, 0.2);
+    margin-left: 2%;
+    margin-top: 5%;
+    z-index: 80;
+}
+/* 下拉菜单的链接 */
+.actionClass a {
+    color: black;
+    padding: 4px 16px;
+    border-radius: 20px;    
+    border-Width: 2px;
+    border-Color: 'Red';
+    align-items: 'center';
+    text-Align: 'center';
+    text-decoration: none;
+    display: block;
+}
+/* 鼠标移上去后修改下拉菜单链接颜色 */
+.actionClass a:hover {
+  background-color: #7f65c5
+}
+/* .actionClass p:hover {
+  background-color: #129247} */
+.actionClass span:hover {
+  background-color: #dadd0d
+}
+.actionClass span {
+  background-color: #7f65c5
+}
+
+#close-button {
+  color: red;
+  
+            float: right;
+            cursor: pointer;
+        }
+.editClass {
+  display: none;
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  width: 90%; 
+  height: 80%; 
+  background-color: #ccc; 
+  padding: 10px; 
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);  */
+  z-index: 9999;
+}
+
+.editClass label{
+  text-align: right;
+  width: 20%; 
+  
+}
+.editClass input, select ,option{
+  -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  width: 50%; 
+  font-size: large;
+}
+#itemEdit1 {
+  text-align: right;
+  width: 30%; 
+  float: left;
+}
+#itemEdit2 {
+  text-align: right;
+  width: 30%; 
+  float: left;
+}
+#itemEdit3 {
+  text-align: right;
+  width: 30%; 
+  float: left;
+}
+
+.bottom{
+  float: right;
+  cursor: pointer;
+}
+#x-button{
+  color: red;  
+  float: right;
+  cursor: pointer;
+  /* background: orange; */
+  
+  
+}
+.bottom span:hover{
+  
+  background-color: #ccec82
+}
+
+.bottom button{
+    display: inline-block;
+    color: green;
+    padding: 4px 16px;
+    border-radius: 20px;    
+    border-Width: 2px;
+    border-Color: blue;
+    align-items: 'center';
+    text-Align: 'center';
+    width: 100%;
+}
+.bottom button:hover{
+  color: rgb(177, 29, 29);
+  background-color: #a6e909
+}
+
+
+
+ul3 {
+    width: 29%; 
+    height: 100%;
+    float: left;
+    list-style-type: none;
+    /* padding-top: 0.3%; */
+    padding-left: 3%; 
+    /* padding-bottom: 0.3%; */
+    overflow: hidden;
+    background-color: rgb(63, 205, 134);
+    margin: 0;
+     position: relative;
+}
+
+ul3 input{
+  width: 70%;
+  height: 70%;
+  padding-left: 13px;
+  /* border: none; */
+  outline: none;
+  font-size: larger;
+  border-radius: 21px;
+  border: 2px solid blue;
+  background: #eeecec;
+  color: rgb(75, 6, 204); /* 白色文本 */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+ul3 button {
+  height: 21px;
+  width: 21px;
+  cursor: pointer;
+  position: absolute;      
+  border: none;
+            outline: none;
+  background: none;
+            top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+        }
+ul3 button:before{
+  content: "\f002";
+  font-family: FontAwesome;
+  color: #480c96;
+}
+
+.content {
+  position: absolute;
+ top: 5%;
+ bottom: 4%;
+  width: 100%;
+  height: 91%;
+  /* flex-grow: 1; */
+  background-color: #a5e70b;
+  display: flex;
+  flex-flow: row;
+/* float: top; */
+}
+
+.content #sidenav {
+  /* overflow: scroll;  */
+  margin: 0;
+  padding: 0;
+  position: relative;   
+}
+
+.footbase {
+  /* flex: 1; */
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   height: 4%;
+   position: fixed;
+   background-color: rgb(0, 255, 94);
+   transition: 0s;
+   color: purple;
+   text-align: center;
+}
+
+.footbase p {
+  margin-top: 0.2%;
+  margin-bottom:0.2%;
+} 
+
+#win {
+  position: absolute;
+ top: 5%;
+ left: 35%;
+  /* width: 10%; */
+  /* height: 90%; */
+  background-color:skyblue ;
+  z-index: 100;
+}
+
+
+</style>
+  <script type="module" crossorigin src="/vangf/assets/navbar-uBPJphPD.js"></script>
+  <link rel="modulepreload" crossorigin href="/vangf/assets/index-dfc2d82f-CG6sA5pC.js">
+</head>
+<body>
+<nav>
+  <div id="itemEdit" class="editClass">
+  
+    <!-- <p style="font-size:25px "  ></p> -->
+    <div type="text" id="itemEdit1" class="item">
+      <!-- 1 -->
+      <label for="barcode" style="color:blue;">Barcode:</label>
+      <input type="text" id="barcode" value="Mickey2" style="background-color:rgb(10, 226, 86);"><br><br>
+      <label for="jobID" style="color:blue;">JobID:</label>
+      <input type="text" id="jobID" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="modeID" style="color:blue;">ModeID:</label>
+      <select type="text" id="modeID" style="background-color:rgb(226, 222, 10);">
+        <option value="DL">DL</option>
+        <option value="PK">PK</option>
+      </select> <br><br>
+      <label for="carrierRef" style="color:blue;">CarrierRef:</label>
+      <input type="text" id="carrierRef" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="scheduledDate" style="color:blue;">ScheduledDate:</label>
+      <input type="text" id="scheduledDate" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="btacc" style="color:blue;">BTACC:</label>
+      <select id="btacc" style="background-color:rgb(226, 222, 10);">		 
+      </select> <br><br>
+      <label for="serviceType" style="color:blue;">ServiceType:</label>
+      <select type="text" id="serviceType" style="background-color:rgb(226, 222, 10);">
+        <option type="text" value="Normal" style="background-color:rgb(226, 222, 10);">Normal</option>
+        <option type="text" value="HighService" style="background-color:rgb(226, 222, 10);">HighService</option>
+      </select> <br><br>
+      
+      <label for="weight" style="color:blue;">Weight:</label>
+      <input type="text" id="weight" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="unit" style="color:blue;">Unit:</label>
+      <select type="text" id="unit" style="background-color:rgb(226, 222, 10);">
+        <option type="text" value="kg" style="background-color:rgb(226, 222, 10);">kg</option>
+        <option type="text" value="lb" style="background-color:rgb(226, 222, 10);">lb</option>
+      </select> <br><br>
+      <label for="route" style="color:blue;">Route:</label>
+      <input type="text" id="route" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      
+    </div>
+    <div type="text" id="itemEdit2" class="item"> <!-- 2 -->
+      <label for="company" style="color:blue;">Compay:</label>
+      <input type="text" id="company" value="Mickey2" style="background-color:rgb(10, 226, 212);"><br><br>
+      <label for="address1" style="color:blue;">Address1:</label>
+      <input type="text" id="address1" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="address2" style="color:blue;">Address2:</label>
+      <input type="text" id="address2" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="address3" style="color:blue;">Address3:</label>
+      <input type="text" id="address3" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="receiver" style="color:blue;">Receiver:</label>
+      <input type="text" id="receiver" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="city" style="color:blue;">City:</label>
+      <input type="text" id="city" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="provState" style="color:blue;">ProvState:</label>
+      <input type="text" id="provState" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="postalCode" style="color:blue;">PostalCode:</label>
+      <input type="text" id="postalCode" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="phone" style="color:blue;">Phone:</label>
+      <input type="text" id="phone" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="email" style="color:blue;">Email:</label>
+      <input type="text" id="email" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br>
+    </div>
+    <div type="text" id="itemEdit3" class="item"> <!-- 3 -->
+      <label for="size" style="color:blue;">Size:</label>
+      <select type="text" id="size" style="background-color:rgb(226, 222, 10);">
+        
+        <option value="Parcel">Parcel</option>
+        <option value="Skid">Skid</option>
+      </select> <br><br>
+      <!-- <input type="text" id="size" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br> -->
+      <label for="howmany" style="color:blue;">HowMany:</label>
+      <select type="text" id="howmany" value="1" style="background-color:rgb(226, 222, 10);">
+        
+        <option value="1">1</option>
+        <option value="2">2</option> 
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+      </select> <br><br>
+      <!-- <input type="text" id="howmany" value="Mickey2" style="background-color:rgb(226, 222, 10);"><br><br> -->
+      
+      <label for="starttime" style="color:blue;">StartTime:</label>
+      <input type="text" id="starttime" value="6:00" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="endtime" style="color:blue;">EndTime:</label>
+      <input type="text" id="endtime" value="6:00" style="background-color:rgb(226, 222, 10);"><br><br>
+      <label for="extrafee" style="color:blue;">ExtraFee:</label>
+      <input type="text" id="extrafee" value="0.00" style="background-color:rgb(226, 222, 10);"><br><br>
+    </div>
+    <div id="bottombutton" class="bottom" >
+      <span id="x-button" onclick="closeRowEdit()">[X]</span><br><br>    
+      <button id="save-button">Save</button><br><br>
+      <button id="cancel-button" onclick="closeRowEdit()">Cancel</button><br><br>
+    </div>
+  </div>
+
+    <ul1>
+      <input type="checkbox" id="switch" onclick="openSide()"/>
+      <label for="switch" >Toggle</label>
+      <p id="companyName">CompanyName</p>
+      </ul1>
+    <ul2>
+      <div class="dropdown"> 
+        <button  id="downBut" class="dropbtn">all data</button>
+        <div id="downCon" class="dropdown-content">
+          <a href="#" id="alldata" >all data</a>
+          <a href="#" id="undispatch" >undispatch</a>
+          <a href="#" id="dispatched">dispatched</a>
+          <a href="#" id="trouble">trouble</a>
+          <a href="#" id="finished">finished</a>
+          <a href="#" id="terminated">terminated</a>
+        </div>
+        <div id="actionItems" class="actionClass">
+          <span id="close-button">[X]</span>
+          <p style="font-size:25px " id="emperty" ></p>
+          <a href="#" id="return" >return</a>
+          <a href="#" id="destroyItem" >destroy</a>
+          <a href="#" id="sell" >sell</a>
+        </div>
+      </div> 
+        <!-- <select name="pets" id="step-select" onchange="selectChange()">
+          <option value="all data">all data</option>
+          <option value="UnDispatch">undispatch</option>
+          <option value="Dispatched">dispatched</option>
+          <option value="MeetTrouble">trouble</option>
+          <option value="Finished">finished</option>
+          <option value="terminated">terminated</option>
+        </select> -->
+        <div class="dropdown"> 
+          <button  id="downButton" class="dropbtn">menu</button>
+          <div id="downContent" class="dropdown-content">
+            <a href="#" id="refresh" >Refresh</a>
+            <a href="#" id="dispatchTo">Dispatch To</a>
+            <a href="#" id="unDispatch">UnDispatch</a>
+            <a href="#" id="dispatchAll">Dispatch All</a>
+            <a href="#" id="unDispatchSpecial">unDispatch Sp</a>
+            <a href="#" id="oneRowEdit">Row Edit</a>
+            <a href="#" id="deleteItems">Delete Items</a>
+            <a href="#" id="terminate" >Terminate Items</a>
+            <a href="#" id="createData" onclick="changeFile()">Create Data</a>
+            <a href="#" id="dataToFB" >Data to FB</a>
+          </div>
+          
+
+        </div> 
+         
+    </ul2>
+    <ul3 >
+      <input type="text" id="searchID" placeholder="search ..." />
+      <!-- <button type="submit" onclick="addSheet()"></button> oninput="searchString()"-->
+    </ul3>
+</nav>
+
+<div class="content">
+  <div id="mySidenav" class="sidenav"></div>
+  <div id="example" class="sheet"></div>
+</div>
+
+
+
+<div id="win" class="cwin"></div>
+
+
+
+<div class="footbase">
+  <p>Author: Jianhai Kang</p>
+</div>  
+
+<script>
+  
+  function closeRowEdit() {
+    document.getElementById("itemEdit").style.display="none"
+  }
+
+  function openSide() {
+			 // Get the checkbox
+			 var checkBox = document.getElementById("switch");
+			
+			 // If the checkbox is checked, display the output text
+			 if (checkBox.checked == true){
+			//   document.getElementById('demo').innerHTML = "closed";
+			   document.getElementById("mySidenav").style.display="none"
+			 } else {
+			//    document.getElementById('demo').innerHTML = "opened";
+			
+			document.getElementById("mySidenav").style.display=""
+			   
+		   }}	
+
+  function firebaseInit()
+	{
+	  const firebaseConfig = {
+			apiKey: "AIzaSyDYSjXVHK9N9H_sQYF9jEb1k4Nhtl-V-us",
+			authDomain: "joblist-kang.firebaseapp.com",
+			databaseURL: "https://joblist-kang.firebaseio.com",
+			projectId: "joblist-kang",
+			storageBucket: "joblist-kang.appspot.com",
+			messagingSenderId: "704002182844",
+			appId: "1:704002182844:web:636b84021295c9c629cab9",
+			measurementId: "G-W779X1QZW2"
+			};
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+		//const storage = firebase.storage();
+    firebaseAuth();
+	}
+	
+  function firebaseAuth()
+	{
+	  firebase.auth().signInWithEmailAndPassword("kjhlr@hotmail.com", "671691")
+	   .then(function() {
+		//window.alert("auth-ok");
+		//window.addEventListener('dataActReady', creatCsvArr());
+		//success
+		//  document.getElementById("demo").innerHTML = "ok";
+		//  myFunction();
+	   })
+	  .catch(function() {
+		window.alert("auth-wrong");
+		// Error Handling
+		  //document.getElementById("demo").innerHTML = "Wrong"; 
+	  });
+	
+	}
+
+	async function changeFile() {
+		
+		let fileHandle;
+		const options = {
+			types: [
+				{
+					description: "text",
+					accept: {
+						"text/csv": [".csv"],
+					},
+				},
+			],
+			excludeAcceptAllOption: true,
+			multiple: false,
+		 };
+		 
+		[fileHandle] = await window.showOpenFilePicker(options);
+		const file = await fileHandle.getFile();
+		const contents = await file.text();
+		
+		let data = contents.split("\n");
+		console.log(data.length);
+		console.log(data[0]);
+		console.log(data[1]);
+		//console.log(data[22]);
+		//console.log(assemblyArr);
+		// run code with our fileHandle
+		// if (fileHandle.kind === "file") {   
+		//   // run file code
+		 
+	
+		// } else if (fileHandle.kind === "directory") {
+		//   // run directory code
+		// }
+		var strd=data[1].trim();
+		var i1=0;
+		var i2=0;
+		for (var k = 0; k < strd.length; k++){
+		let c=strd[k];
+			if(c==","){
+				i1++;
+			}
+			if(c=="|"){
+				i2++;
+			}
+		}
+		if(i1<22 && i2<22){
+			window.alert("new data,no such a data structure!");
+			return
+		}
+	
+		 var dataAct=new Array();
+		for (var i = 0; i < data.length; i++) {
+			var strk=data[i].trim();
+			let dataSub;
+			//dataAct=[];
+			if(i1>20){
+				var complex=false;
+				var newStr='';
+				for (var k = 0; k < strk.length; k++){
+					let c=strk[k];
+						if(c=='"'){
+							//newStr += c;
+							if(complex){
+								complex = false;
+							}else{
+								complex = true;
+							}
+						}else{
+							if(complex && c==',' ){
+								newStr += ';';
+							}else{					
+								newStr += c;
+							}
+						}
+			
+				}
+					//data[i] = newStr;
+					dataSub = newStr.split(",");
+					dataAct.push(dataSub);
+			}
+	
+			if(i2>20){
+				var newlStr='';
+				for (var m = 0; m < strk.length; m++){
+					let d=strk[m];
+					if( d==',' ){
+						newlStr += ';';
+					}else{					
+						newlStr += d;
+					}
+			
+				}
+				 dataSub = newlStr.split("|");
+				 dataAct.push(dataSub);
+			}
+			 
+				
+		}
+		console.log(dataAct);
+		if(dataAct==null || dataAct.length<=1){
+			window.alert("no data!");
+			return
+		}
+		var str=dataAct[0][6]+dataAct[0][18]+dataAct[0][24]
+		if(str == "ServiceStatusScan Type"){
+			creatCsvArr(dataAct)
+		}else{    
+			window.alert("new data,no such a data structure!");
+			return
+		}
+	
+	
+	 
+	}
+
+	function creatCsvArr(data){
+		
+		console.log(data);
+		var i1=0;
+		var i2=0;
+		var i3=0;
+		var i4=0;
+		var i5=0;
+		var i6=0;
+		var i7=0;
+		var i8=0;
+		var j1=0;
+		var j2=0;
+		var j3=0;
+		var j4=0;
+		var j5=0;
+		var j6=0;
+		var j7=0;
+		var k1=0;
+		var k2=0;
+		var other=0;
+		var otherArr = new Array();
+    var ignore=0;
+    var ignoreArr = new Array();
+		var dateArr=new Array();
+	
+	
+		for (var m = 1; m < data.length; m++) {
+      if(data[m].length<5){
+					break;
+			};
+
+			var dateEach=data[m][0].slice(0,11);
+			if(!dateArr.includes(dateEach)){
+					dateArr.push(dateEach);
+			};
+
+			if(data[m][18]=='1' || data[m][3]=='Arrived at Depot' || data[m][6]=='NOCHARGETONERPU'){
+        ignore=m+1;
+        console.log(m);
+        console.log(ignore);
+        ignoreArr.push(ignore);  
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
+					i1=i1+1;   
+			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='GT'){
+					i2=i2+1;
+      }else if(data[m][3]=='Closed' && data[m][4]=='GT'){
+					i3=i3+1;
+			}else if(data[m][3]=='Furniture' && data[m][4]=='GT'){
+					i4=i4+1;
+      }else if(data[m][3]=='OVERSIZED' && data[m][4]=='GT'){
+					i5=i5+1;
+      }else if(data[m][3]=='Picked Up' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
+					i6=i6+1;  
+      }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='GT'){
+					i7=i7+1; 
+      }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
+					i8=i8+1; 
+      }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='DELIVERY'){
+					i8=i8+1; 
+      }else if(data[m][3]=='Pick Up Not Available' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
+					i8=i8+1;    
+			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='NOVEXCO'){
+				j1=j1+1;
+			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='NOVEXCO'){
+				j2=j2+1;
+      }else if(data[m][3]=='Closed' && data[m][4]=='NOVEXCO'){
+        j3=j3+1;  
+			}else if(data[m][3]=='Furniture' && data[m][4]=='NOVEXCO'){
+					j4=j4+1;
+      }else if(data[m][3]=='OVERSIZED' && data[m][4]=='NOVEXCO'){
+					j5=j5+1;   
+      }else if(data[m][3]=='Picked Up' && data[m][4]=='NOVEXCO' && data[m][6]=='PICK UP'){
+					j6=j6+1;
+      }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='NOVEXCO'){
+					j7=j7+1;                  
+			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='MC'){
+						k2=k2+1;        
+			}else{
+						other=m+1;
+						otherArr.push(other);
+			}
+		 
+		}
+			dateArr.sort();
+			
+			
+			//let time= new Date();
+			//var timeStr=getDatetime;
+			let myTime= new Date().valueOf(); 
+			 var offset=new Date().getTimezoneOffset()*-60*1000; // offset mm
+			const timeStr = (new Date(myTime+offset)).toISOString().slice(0, 19).replace("T", " ");
+			var fileName="";
+					if(otherArr.length==0){
+						fileName=data[1][1]+"-"+dateArr[0]+"-"+dateArr[dateArr.length-1]+"-"+timeStr+"-"+"good"+".csv";
+					}else{
+						fileName=data[1][1]+"-"+dateArr[0]+"-"+dateArr[dateArr.length-1]+"-"+timeStr+"-"+"other"+".csv";
+					}
+			
+			console.log(fileName);
+	
+			var csvStr ="";
+			for (var j = 0; j < data.length; j++) {
+        if(data[j].length<5){
+					break;
+			  };
+				for (var k = 0; k < data[j].length; k++) {
+					csvStr += data[j][k]+","
+				}
+				csvStr = csvStr.slice(0,-1)+'\r\n';
+			}
+      console.log(ignoreArr);
+      csvStr += ""+","+""+","+'\r\n';
+			csvStr += "GT Delivered"+","+""+","+i1+'\r\n';
+			csvStr += "GT OFD"+","+""+","+i2+'\r\n';
+			csvStr += "GT EXCEPTION"+","+""+","+i3+'\r\n';
+			csvStr += "GT FURNITURE"+","+""+","+i4+'\r\n';
+			csvStr += "GT O/S"+","+""+","+i5+'\r\n';
+			csvStr += "GT PICK UP"+","+""+","+i6+'\r\n';
+			csvStr += "GT GHOST"+","+""+","+i7+'\r\n';
+			csvStr += "Return to WH/Pick Up Not Available"+","+""+","+i8+'\r\n';
+			csvStr += "NOV Delivered"+","+""+","+j1+'\r\n';
+			csvStr += "NOV OFD"+","+""+","+j2+'\r\n';
+			csvStr += "NOV EXCEPTION"+","+""+","+j3+'\r\n';
+			csvStr += "NOV FURNITURE"+","+""+","+j4+'\r\n';
+			csvStr += "NOV O/S"+","+""+","+j5+'\r\n';
+			csvStr += "NOV PICK UP"+","+""+","+j6+'\r\n';
+			csvStr += "NOV GHOST"+","+""+","+j7+'\r\n';
+			csvStr += "NATRULAB"+","+""+","+k1+'\r\n';
+			csvStr += "MISC"+","+""+","+k2+'\r\n';
+      csvStr += "ignore"+","+ignoreArr.length+","+ignoreArr.join(";")+'\r\n';
+			csvStr += "other"+","+otherArr.length+","+otherArr.join(";")+'\r\n';
+			
+			//sessionStorage.setItem("csvString", csvStr);
+			console.log(csvStr);
+			var file = new Blob([csvStr], {type: "text/csv;charset=utf-8"});
+			if (window.navigator.msSaveOrOpenBlob) // IE10+
+			window.navigator.msSaveOrOpenBlob(file, fileName);
+			else { // Others
+					var a = document.createElement("a"),
+									url = URL.createObjectURL(file);
+					a.href = url;
+					a.download = fileName;
+					document.body.appendChild(a);
+					a.click();
+					setTimeout(function() {
+							document.body.removeChild(a);
+							window.URL.revokeObjectURL(url);  
+					}, 0); 
+			}
+			
+	var userIn = window.localStorage.getItem('userInfo');
+	// Get a reference to the storage service, which is used to create references in your storage bucket
+	var storage = firebase.storage();
+
+	// Create a storage reference from our storage service
+	var storageRef = storage.ref();
+	// Child references can also take paths delimited by '/'
+	const timeStr2 = (new Date(myTime+offset)).toISOString().slice(0, 19).replace("T", " ");
+	var fileName2="";
+					if(otherArr.length==0){
+						fileName2=data[1][1]+"-"+timeStr+"-"+"good"+".csv";
+					}else{
+						fileName2=data[1][1]+"-"+timeStr+"-"+"other"+".csv";
+					}
+	var spaceRef = storageRef.child('csv/'+timeStr2.slice(0,11)+'/'+JSON.parse(userIn)[2]+'/'+fileName2);
+
+	console.log(timeStr2.slice(0,11));
+	console.log(JSON.parse(userIn)[2]);
+	console.log(fileName2);
+	console.log(spaceRef);
+	spaceRef.put(file).then((snapshot) => {
+		console.log('Uploaded a raw string!');
+	});
+			
+	}
+	
+
+</script> 
+
+
+    
+
+
+
+<script>
+  //<h1 style="margin-bottom:0;">主要的网页标题</h1>//#0003D1  #FFA500
+  window.onload = function() {
+   
+   firebaseInit();
+  
+   
+   
+   };
+   
+  
+
+</script> 
+</body>
+</html>
