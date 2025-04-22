@@ -828,11 +828,12 @@ ul3 button:before{
 					dateArr.push(dateEach);
 			};
 
-			if(data[m][18]=='1' || data[m][3]=='Arrived at Depot' || data[m][6]=='NOCHARGETONERPU'){
+			if(data[m][3]=='Arrived at Depot' || data[m][6]=='NOCHARGETONERPU'){
         ignore=m+1;
-        console.log(m);
-        console.log(ignore);
-        ignoreArr.push(ignore);  
+        ignoreArr.push(ignore);
+      }else if(data[m][18]=='1' && data[m][4]=='GT'){
+        ignore=m+1;
+        ignoreArr.push(ignore);
       }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
 					i1=i1+1; 
       }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
@@ -851,6 +852,8 @@ ul3 button:before{
 					i6=i6+1;  
       }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='GT'){
 					i7=i7+1; 
+        }else if(data[m][18]=='1' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
+					i7=i7+1;  
       }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
 					i8=i8+1; 
       }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='DELIVERY'){
