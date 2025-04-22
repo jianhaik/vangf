@@ -818,6 +818,7 @@ ul3 button:before{
 	
 	
 		for (var m = 1; m < data.length; m++) {
+
       if(data[m].length<5){
 					break;
 			};
@@ -833,8 +834,12 @@ ul3 button:before{
         console.log(ignore);
         ignoreArr.push(ignore);  
       }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
-					i1=i1+1;   
+					i1=i1+1; 
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
+					i1=i1+1; 
 			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='GT'){
+					i2=i2+1;
+      }else if(data[m][3]=='Out for Delivery' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
 					i2=i2+1;
       }else if(data[m][3]=='Closed' && data[m][4]=='GT'){
 					i3=i3+1;
