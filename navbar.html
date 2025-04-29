@@ -793,14 +793,15 @@ ul3 button:before{
 	function creatCsvArr(data){
 		
 		console.log(data);
-		var i1=0;
-		var i2=0;
-		var i3=0;
-		var i4=0;
-		var i5=0;
-		var i6=0;
-		var i7=0;
-		var i8=0;
+		var i1=0;//GT Delivered
+		var i2=0;//GT OFD
+		var i3=0;//GT EXCEPTION
+		var i4=0;//GT FURNITURE
+		var i5=0;//GT O/S
+		var i6=0;//GT PICK UP
+		var i7=0;//GT GHOST
+		var i8=0;//Return to WH/Pick Up Not Available
+    var i9=0;//mission,ABB
 		var j1=0;
 		var j2=0;
 		var j3=0;
@@ -834,10 +835,18 @@ ul3 button:before{
       }else if(data[m][18]=='1' && data[m][4]=='GT'){
         ignore=m+1;
         ignoreArr.push(ignore);
-      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
-					i1=i1+1; 
-      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
-					i1=i1+1; 
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT' && data[m][7].slice(4,8)=='2R01'){
+					i4=i4+1;   
+			}else if(data[m][3]=='Furniture' && data[m][4]=='GT'){
+					i4=i4+1;  
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'&& data[m][10].toUpperCase()=='ABBOTSFORD'){
+					i9=i9+1; 
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'&& data[m][10].toUpperCase()=='MISSION'){
+					i9=i9+1;
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300' && data[m][10].toUpperCase()=='ABBOTSFORD'){
+					i9=i9+1;
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300' && data[m][10].toUpperCase()=='MISSION'){
+					i9=i9+1;     
 			}else if(data[m][3]=='Out for Delivery' && data[m][4]=='GT'){
 					i2=i2+1;
       }else if(data[m][3]=='Out for Delivery' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
@@ -848,15 +857,17 @@ ul3 button:before{
 					i3=i3+1;
       }else if(data[m][3].slice(-6)=='Closed' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300' ){
 					i3=i3+1;
-			}else if(data[m][3]=='Furniture' && data[m][4]=='GT'){
-					i4=i4+1;
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
+					i1=i1+1;
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
+					i1=i1+1;      
       }else if(data[m][3]=='OVERSIZED' && data[m][4]=='GT'){
 					i5=i5+1;
       }else if(data[m][3]=='Picked Up' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
 					i6=i6+1;  
       }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='GT'){
 					i7=i7+1; 
-        }else if(data[m][18]=='1' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
+      }else if(data[m][18]=='1' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
 					i7=i7+1;  
       }else if(data[m][3]=='Returned to GT warehouse' && data[m][4]=='GT' && data[m][6]=='PICK UP'){
 					i8=i8+1; 
@@ -918,6 +929,7 @@ ul3 button:before{
       console.log(ignoreArr);
       csvStr += ""+","+""+","+'\r\n';
 			csvStr += "GT Delivered"+","+""+","+i1+'\r\n';
+      csvStr += "GT Delivered MISSION/ABB"+","+""+","+i9+'\r\n';
 			csvStr += "GT OFD"+","+""+","+i2+'\r\n';
 			csvStr += "GT EXCEPTION"+","+""+","+i3+'\r\n';
 			csvStr += "GT FURNITURE"+","+""+","+i4+'\r\n';
