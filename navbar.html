@@ -835,6 +835,9 @@ ul3 button:before{
       }else if(data[m][18]=='1' && data[m][4]=='GT'){
         ignore=m+1;
         ignoreArr.push(ignore);
+      }else if(data[m][3]=='Out for Delivery' && data[m][4]=='NII' && data[m][2].length==8){
+        ignore=m+1;
+        ignoreArr.push(ignore);
       }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT' && data[m][7].slice(4,8)=='2R01'){
 					i4=i4+1;   
 			}else if(data[m][3]=='Furniture' && data[m][4]=='GT'){
@@ -859,6 +862,8 @@ ul3 button:before{
 					i3=i3+1;
       }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='GT'){
 					i1=i1+1;
+      }else if(data[m][3]=='Scanning Error / Photo Taken' && data[m][4]=='GT'){
+					i1=i1+1;   
       }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='' && data[m][2].slice(0,4)!=='7300'){
 					i1=i1+1;      
       }else if(data[m][3]=='OVERSIZED' && data[m][4]=='GT'){
@@ -890,8 +895,10 @@ ul3 button:before{
       }else if(data[m][3]=='Picked Up' && data[m][4]=='NOVEXCO' && data[m][6]=='PICK UP'){
 					j6=j6+1;
       }else if(data[m][18]=='SHIPMENT_INFO_UPDATED' && data[m][4]=='NOVEXCO'){
-					j7=j7+1;                  
-			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='MC'){
+					j7=j7+1;
+      }else if(data[m][3]=='Delivered With Signature' && data[m][4]=='NII' && data[m][2].length==8){
+          k1=k1+1;                        
+			}else if(data[m][3]=='Delivered With Signature' && data[m][4]=='MC'&& data[m][2].length==8){
 						k2=k2+1;        
 			}else{
 						other=m+1;
