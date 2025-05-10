@@ -588,7 +588,7 @@ ul3 button:before{
             <a href="#" id="oneRowEdit">Row Edit</a>
             <a href="#" id="deleteItems">Delete Items</a>
             <a href="#" id="terminate" >Terminate Items</a>
-            <a href="#" id="createData" onclick="changeFile()">Create Data</a>
+            <a href="#" id="createData" onclick="checkAuth()">Create Data</a>
             <a href="#" id="dataToFB" >Data to FB</a>
           </div>
           
@@ -618,7 +618,8 @@ ul3 button:before{
 </div>  
 
 <script>
-  
+  var userID='myID';
+
   function closeRowEdit() {
     document.getElementById("itemEdit").style.display="none"
   }
@@ -659,13 +660,13 @@ ul3 button:before{
   function firebaseAuth()
 	{
 	  firebase.auth().signInWithEmailAndPassword("kjhlr@hotmail.com", "671691")
-	   .then(function() {
-		//window.alert("auth-ok");
-		//window.addEventListener('dataActReady', creatCsvArr());
-		//success
-		//  document.getElementById("demo").innerHTML = "ok";
-		//  myFunction();
-	   })
+	   .then((userCredential) => {
+			
+			const user = userCredential.user;
+            console.log(user.uid);
+            userID=user.uid;
+			return user.uid;
+		  })
 	  .catch(function() {
 		window.alert("auth-wrong");
 		// Error Handling
@@ -674,7 +675,16 @@ ul3 button:before{
 	
 	}
 
-	async function changeFile() {
+	function checkAuth(){
+    if(userID=='UTH4cEFIGuO8duV0Y2boaAOwXDj1'){
+      changeFile();
+    }else{
+      window.alert("Auth-Wrong");
+    }
+
+  }
+  
+  async function changeFile() {
 		
 		let fileHandle;
 		const options = {
